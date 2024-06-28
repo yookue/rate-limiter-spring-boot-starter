@@ -1,0 +1,5 @@
+# Rate Limiter for Spring Boot Starter
+# Copyright (c) 2022 Yookue Ltd. All rights reserved.
+# https://yookue.com
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = com.yookue.springstarter.ratelimiter.config.RateLimiterAutoConfiguration
