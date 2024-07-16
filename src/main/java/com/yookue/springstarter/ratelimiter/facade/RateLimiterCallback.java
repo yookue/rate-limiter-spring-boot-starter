@@ -17,7 +17,7 @@
 package com.yookue.springstarter.ratelimiter.facade;
 
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import org.aspectj.lang.ProceedingJoinPoint;
 import com.yookue.springstarter.ratelimiter.annotation.RateLimited;
 

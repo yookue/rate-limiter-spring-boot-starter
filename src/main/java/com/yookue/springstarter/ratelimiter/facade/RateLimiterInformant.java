@@ -24,5 +24,6 @@ package com.yookue.springstarter.ratelimiter.facade;
  */
 @FunctionalInterface
 public interface RateLimiterInformant {
+    @SuppressWarnings("RedundantThrows")
     String getUsername() throws Exception;
 }

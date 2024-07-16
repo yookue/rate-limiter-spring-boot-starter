@@ -17,7 +17,7 @@
 package com.yookue.springstarter.ratelimiter.facade.impl;
 
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;

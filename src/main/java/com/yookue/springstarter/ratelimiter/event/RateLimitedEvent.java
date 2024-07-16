@@ -17,8 +17,8 @@
 package com.yookue.springstarter.ratelimiter.event;
 
 
-import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.Nonnull;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.ApplicationEvent;
 
 

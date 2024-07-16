@@ -17,8 +17,8 @@
 package com.yookue.springstarter.ratelimiter.config;
 
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -67,6 +67,7 @@ public class RateLimiterAutoConfiguration {
     static class Redis {
         @Bean
         @ConditionalOnMissingBean
+        @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
         public RedisRateLimiterAspect redisRateLimiterAspect(@Nonnull RateLimiterProperties properties, @Nonnull ObjectProvider<RateLimiterCallback> callback, @Nullable @Qualifier(value = REDIS_TEMPLATE) StringRedisTemplate preferredTemplate, @Nonnull ObjectProvider<StringRedisTemplate> presentTemplate) {
             return new RedisRateLimiterAspect(properties, callback.getIfAvailable(), ObjectUtils.defaultIfNull(preferredTemplate, presentTemplate.getIfAvailable()));
         }
