@@ -33,7 +33,7 @@ import org.springframework.util.ClassUtils;
 import com.yookue.commonplexus.javaseutil.constant.AssertMessageConst;
 import com.yookue.commonplexus.javaseutil.constant.CharVariantConst;
 import com.yookue.commonplexus.javaseutil.util.StringUtilsWraps;
-import com.yookue.commonplexus.springutil.util.AspectUtilsWraps;
+import com.yookue.commonplexus.springutil.util.AopUtilsWraps;
 import com.yookue.commonplexus.springutil.util.BeanFactoryWraps;
 import com.yookue.commonplexus.springutil.util.WebUtilsWraps;
 import com.yookue.springstarter.ratelimiter.annotation.RateLimited;
@@ -65,7 +65,7 @@ public abstract class AbstractRateLimiterAspect implements ApplicationContextAwa
 
     @Around(value = "@annotation(com.yookue.springstarter.ratelimiter.annotation.RateLimited)")
     public Object aroundPoint(@Nonnull ProceedingJoinPoint point) throws Throwable {
-        Method method = AspectUtilsWraps.getMethod(point);
+        Method method = AopUtilsWraps.getTargetMethod(point);
         Assert.notNull(method, AssertMessageConst.NOT_NULL);
         RateLimited annotation = AnnotationUtils.getAnnotation(method, RateLimited.class);
         if (annotation == null || annotation.ttl() <= 0L || annotation.unit() == null) {
