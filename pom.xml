@@ -21,12 +21,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.yookue.springstarter</groupId>
-    <artifactId>rate-limiter-spring-boot-starter</artifactId>
+    <artifactId>rate-limit-spring-boot-starter</artifactId>
     <version>3.4.1</version>
 
     <name>${project.artifactId}</name>
-    <description>Rate Limiter for Spring Boot Starter</description>
-    <url>https://github.com/yookue/rate-limiter-spring-boot-starter</url>
+    <description>Rate Limit for Spring Boot Starter</description>
+    <url>https://github.com/yookue/rate-limit-spring-boot-starter</url>
     <inceptionYear>2022</inceptionYear>
 
     <organization>
@@ -481,14 +481,14 @@
     </build>
 
     <scm>
-        <url>https://github.com/yookue/rate-limiter-spring-boot-starter</url>
-        <connection>scm:git:https://github.com/yookue/rate-limiter-spring-boot-starter.git</connection>
-        <developerConnection>scm:git:https://github.com/yookue/rate-limiter-spring-boot-starter.git</developerConnection>
+        <url>https://github.com/yookue/rate-limit-spring-boot-starter</url>
+        <connection>scm:git:https://github.com/yookue/rate-limit-spring-boot-starter.git</connection>
+        <developerConnection>scm:git:https://github.com/yookue/rate-limit-spring-boot-starter.git</developerConnection>
     </scm>
 
     <issueManagement>
         <system>Github</system>
-        <url>https://github.com/yookue/rate-limiter-spring-boot-starter/issues</url>
+        <url>https://github.com/yookue/rate-limit-spring-boot-starter/issues</url>
     </issueManagement>
 
     <licenses>

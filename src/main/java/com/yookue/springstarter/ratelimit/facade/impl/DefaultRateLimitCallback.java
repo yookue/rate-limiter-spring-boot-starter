@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimiter.facade.impl;
+package com.yookue.springstarter.ratelimit.facade.impl;
 
 
 import jakarta.annotation.Nonnull;
@@ -28,31 +28,31 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.yookue.commonplexus.javaseutil.constant.AssertMessageConst;
 import com.yookue.commonplexus.springutil.structure.RestResponseStruct;
 import com.yookue.commonplexus.springutil.util.WebUtilsWraps;
-import com.yookue.springstarter.ratelimiter.annotation.RateLimited;
-import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
+import com.yookue.springstarter.ratelimit.annotation.RateLimit;
+import com.yookue.springstarter.ratelimit.property.RateLimitProperties;
 
 
 /**
- * Facade implementation for rate limiter callback
+ * Facade implementation for rate limit callback
  *
  * @author David Hsing
  */
-public class DefaultRateLimiterCallback extends AbstractRateLimiterCallback {
-    public DefaultRateLimiterCallback(RateLimiterProperties properties) {
+public class DefaultRateLimitCallback extends AbstractRateLimitCallback {
+    public DefaultRateLimitCallback(RateLimitProperties properties) {
         super(properties);
     }
 
     @Override
-    public Object process(@Nonnull ProceedingJoinPoint point, @Nonnull RateLimited annotation) throws Exception {
+    public Object process(@Nonnull ProceedingJoinPoint point, @Nonnull RateLimit annotation) throws Exception {
         HttpServletRequest request = WebUtilsWraps.getContextServletRequest();
         Assert.notNull(request, AssertMessageConst.NOT_NULL);
         return WebUtilsWraps.isRestRequest(request) ? processRest(point, annotation) : processHtml(point, annotation);
     }
 
     @SuppressWarnings("unused")
-    protected Object processHtml(@Nonnull ProceedingJoinPoint point, @Nonnull RateLimited annotation) throws Exception {
-        if (StringUtils.isNotBlank(super.limiterProperties.getDeniedHtmlUrl())) {
-            return new RedirectView(super.limiterProperties.getDeniedHtmlUrl());
+    protected Object processHtml(@Nonnull ProceedingJoinPoint point, @Nonnull RateLimit annotation) throws Exception {
+        if (StringUtils.isNotBlank(super.limitProperties.getDeniedHtmlUrl())) {
+            return new RedirectView(super.limitProperties.getDeniedHtmlUrl());
         }
         HttpServletResponse response = WebUtilsWraps.getContextServletResponse();
         Assert.notNull(response, AssertMessageConst.NOT_NULL);
@@ -61,9 +61,9 @@ public class DefaultRateLimiterCallback extends AbstractRateLimiterCallback {
     }
 
     @SuppressWarnings("unused")
-    protected Object processRest(@Nonnull ProceedingJoinPoint point, @Nonnull RateLimited annotation) {
-        if (StringUtils.isNotBlank(super.limiterProperties.getDeniedRestUrl())) {
-            return new RedirectView(super.limiterProperties.getDeniedRestUrl());
+    protected Object processRest(@Nonnull ProceedingJoinPoint point, @Nonnull RateLimit annotation) {
+        if (StringUtils.isNotBlank(super.limitProperties.getDeniedRestUrl())) {
+            return new RedirectView(super.limitProperties.getDeniedRestUrl());
         }
         return new RestResponseStruct(HttpStatus.FORBIDDEN, super.resolveMessage(annotation));
     }

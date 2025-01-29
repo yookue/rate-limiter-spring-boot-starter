@@ -1,4 +1,4 @@
-# Rate Limiter Spring Boot Starter
+# Rate Limit Spring Boot Starter
 
 Spring Boot application integrates rate limitation quickly, to prevent too frequent accesses.
 
@@ -9,22 +9,22 @@ Spring Boot application integrates rate limitation quickly, to prevent too frequ
 ```xml
     <dependency>
         <groupId>com.yookue.springstarter</groupId>
-        <artifactId>rate-limiter-spring-boot-starter</artifactId>
+        <artifactId>rate-limit-spring-boot-starter</artifactId>
         <version>LATEST</version>
     </dependency>
 ```
 
-> By default, this starter will auto take effect, you can turn it off by `spring.rate-limiter.enabled = false`
+> By default, this starter will auto take effect, you can turn it off by `spring.rate-limit.enabled = false`
 
-- Configure Spring Boot `application.yml` with prefix `spring.rate-limiter` (**Optional**)
+- Configure Spring Boot `application.yml` with prefix `spring.rate-limit` (**Optional**)
 
 ```yml
 spring:
-    rate-limiter:
-        denied-html-url: '/error/rate-limited'
-        denied-rest-url: '/error/rate-limited'
+    rate-limit:
+        name-prefix: "${spring.application.name}:limit:"
+        denied-html-url: '/error/rate-limit'
+        denied-rest-url: '/error/rate-limit'
         storage-type: 'redis'
-        name-prefix: "${spring.application.name}:limiter:"
         throws-exception: false
 ```
 
@@ -40,7 +40,7 @@ spring:
 
 ## Document
 
-- Github: https://github.com/yookue/rate-limiter-spring-boot-starter
+- Github: https://github.com/yookue/rate-limit-spring-boot-starter
 
 ## Requirement
 

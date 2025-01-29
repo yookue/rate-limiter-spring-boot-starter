@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimiter.property;
+package com.yookue.springstarter.ratelimit.property;
 
 
 import java.io.Serializable;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import com.yookue.springstarter.ratelimiter.config.RateLimiterAutoConfiguration;
-import com.yookue.springstarter.ratelimiter.enumeration.LimiterStorageType;
+import com.yookue.springstarter.ratelimit.config.RateLimitAutoConfiguration;
+import com.yookue.springstarter.ratelimit.enumeration.LimitStorageType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 
 /**
- * Properties for Rate Limiter starter
+ * Properties for Rate Limit starter
  *
  * @author David Hsing
  */
-@ConfigurationProperties(prefix = RateLimiterAutoConfiguration.PROPERTIES_PREFIX)
+@ConfigurationProperties(prefix = RateLimitAutoConfiguration.PROPERTIES_PREFIX)
 @Getter
 @Setter
 @ToString
-public class RateLimiterProperties implements Serializable {
+public class RateLimitProperties implements Serializable {
     /**
      * Indicates whether to enable this starter or not
      * <p>
@@ -49,17 +49,17 @@ public class RateLimiterProperties implements Serializable {
     private Integer processorOrder;
 
     /**
-     * The prefix of the limiter name
+     * The prefix of the limit name
      */
     private String namePrefix;
 
     /**
-     * The suffix of the limiter name
+     * The suffix of the limit name
      */
     private String nameSuffix;
 
     /**
-     * Throws {@link com.yookue.springstarter.ratelimiter.exception.RateLimitedException} instead of redirection
+     * Throws {@link com.yookue.springstarter.ratelimit.exception.RateLimitException} instead of redirection
      */
     private Boolean throwsException = true;
 
@@ -76,5 +76,5 @@ public class RateLimiterProperties implements Serializable {
     /**
      * The storage type of the limier, default is {@code REDIS}
      */
-    private LimiterStorageType storageType = LimiterStorageType.REDIS;
+    private LimitStorageType storageType = LimitStorageType.REDIS;
 }

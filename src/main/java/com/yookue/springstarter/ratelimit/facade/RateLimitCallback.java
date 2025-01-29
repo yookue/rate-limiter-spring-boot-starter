@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimiter.facade;
+package com.yookue.springstarter.ratelimit.facade;
 
 
 import jakarta.annotation.Nonnull;
 import org.aspectj.lang.ProceedingJoinPoint;
-import com.yookue.springstarter.ratelimiter.annotation.RateLimited;
+import com.yookue.springstarter.ratelimit.annotation.RateLimit;
 
 
 /**
- * Facade for rate limiter callback
+ * Facade for rate limit callback
  *
  * @author David Hsing
  */
 @FunctionalInterface
-public interface RateLimiterCallback {
-    Object process(@Nonnull ProceedingJoinPoint point, @Nonnull RateLimited annotation) throws Exception;
+public interface RateLimitCallback {
+    Object process(@Nonnull ProceedingJoinPoint point, @Nonnull RateLimit annotation) throws Exception;
 }

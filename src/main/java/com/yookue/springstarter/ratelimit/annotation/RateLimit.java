@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimiter.annotation;
+package com.yookue.springstarter.ratelimit.annotation;
 
 
 import java.lang.annotation.Documented;
@@ -25,13 +25,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.time.temporal.ChronoUnit;
 import org.apache.commons.lang3.StringUtils;
-import com.yookue.springstarter.ratelimiter.enumeration.LimiterKeyType;
+import com.yookue.springstarter.ratelimit.enumeration.LimitKeyType;
 
 
 /**
- * Annotation for setting Rate Limiter period and key type
+ * Annotation for setting Rate Limit period and key type
  * <p>
- * Needs a predefined bean of {@link com.yookue.springstarter.ratelimiter.aspect.AbstractRateLimiterAspect}
+ * Needs a predefined bean of {@link com.yookue.springstarter.ratelimit.aspect.AbstractRateLimitAspect}
  *
  * @author David Hsing
  */
@@ -40,27 +40,27 @@ import com.yookue.springstarter.ratelimiter.enumeration.LimiterKeyType;
 @Documented
 @Inherited
 @SuppressWarnings("unused")
-public @interface RateLimited {
+public @interface RateLimit {
     /**
-     * Returns the time amount for the limiter
+     * Returns the time amount for the limit
      *
-     * @return the time amount for the limiter
+     * @return the time amount for the limit
      */
     long ttl();
 
     /**
-     * Returns the time unit for the limiter
+     * Returns the time unit for the limit
      *
-     * @return the time unit for the limiter
+     * @return the time unit for the limit
      */
     ChronoUnit unit() default ChronoUnit.SECONDS;
 
     /**
-     * Returns the key type for limiter
+     * Returns the key type for limit
      *
-     * @return the key type for limiter
+     * @return the key type for limit
      */
-    LimiterKeyType keyType() default LimiterKeyType.IP_ADDRESS;
+    LimitKeyType keyType() default LimitKeyType.IP_ADDRESS;
 
     /**
      * Returns the message code for {@link org.springframework.context.MessageSource}

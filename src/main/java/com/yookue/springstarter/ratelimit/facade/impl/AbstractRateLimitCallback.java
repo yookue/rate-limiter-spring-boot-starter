@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimiter.facade.impl;
+package com.yookue.springstarter.ratelimit.facade.impl;
 
 
 import jakarta.annotation.Nonnull;
@@ -23,28 +23,28 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.context.i18n.LocaleContextHolder;
 import com.yookue.commonplexus.springutil.util.MessageSourceWraps;
-import com.yookue.springstarter.ratelimiter.annotation.RateLimited;
-import com.yookue.springstarter.ratelimiter.facade.RateLimiterCallback;
-import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
+import com.yookue.springstarter.ratelimit.annotation.RateLimit;
+import com.yookue.springstarter.ratelimit.facade.RateLimitCallback;
+import com.yookue.springstarter.ratelimit.property.RateLimitProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 
 /**
- * Facade implementation for rate limiter callback
+ * Facade implementation for rate limit callback
  *
  * @author David Hsing
  */
 @RequiredArgsConstructor
-public abstract class AbstractRateLimiterCallback implements RateLimiterCallback, MessageSourceAware {
-    private static final String MESSAGE_CODE = "AbstractRateLimiterCallback.tooFrequentTry";    // $NON-NLS-1$
+public abstract class AbstractRateLimitCallback implements RateLimitCallback, MessageSourceAware {
+    private static final String MESSAGE_CODE = "AbstractRateLimitCallback.tooFrequentTry";    // $NON-NLS-1$
     private static final String MESSAGE_TEXT = "Your operation is too frequent, please try again later";    // $NON-NLS-1$
-    protected final RateLimiterProperties limiterProperties;
+    protected final RateLimitProperties limitProperties;
 
     @Setter
     protected MessageSource messageSource;
 
-    protected String resolveMessage(@Nonnull RateLimited annotation) {
+    protected String resolveMessage(@Nonnull RateLimit annotation) {
         if (StringUtils.isNotBlank(annotation.messageText())) {
             return annotation.messageText();
         }

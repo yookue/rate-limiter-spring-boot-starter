@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimiter.aspect;
+package com.yookue.springstarter.ratelimit.aspect;
 
 
 import java.time.temporal.ChronoUnit;
@@ -28,19 +28,19 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.Assert;
 import com.yookue.commonplexus.javaseutil.constant.AssertMessageConst;
 import com.yookue.commonplexus.javaseutil.util.LocalDateWraps;
-import com.yookue.commonplexus.springutil.util.RedisOperationWraps;
+import com.yookue.commonplexus.springutil.util.RedisTemplateWraps;
 import com.yookue.commonplexus.springutil.util.WebUtilsWraps;
-import com.yookue.springstarter.ratelimiter.annotation.RateLimited;
-import com.yookue.springstarter.ratelimiter.event.RateLimitedEvent;
-import com.yookue.springstarter.ratelimiter.exception.RateLimitedException;
-import com.yookue.springstarter.ratelimiter.facade.RateLimiterCallback;
-import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
+import com.yookue.springstarter.ratelimit.annotation.RateLimit;
+import com.yookue.springstarter.ratelimit.event.RateLimitEvent;
+import com.yookue.springstarter.ratelimit.exception.RateLimitException;
+import com.yookue.springstarter.ratelimit.facade.RateLimitCallback;
+import com.yookue.springstarter.ratelimit.property.RateLimitProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 
 /**
- * Redis aspect for rate limiter
+ * Redis aspect for rate limit
  *
  * @author David Hsing
  */
@@ -48,30 +48,30 @@ import lombok.Setter;
 @Getter
 @Setter
 @SuppressWarnings("unused")
-public class RedisRateLimiterAspect extends AbstractRateLimiterAspect {
+public class RedisRateLimitAspect extends AbstractRateLimitAspect {
     private StringRedisTemplate redisTemplate;
 
-    public RedisRateLimiterAspect(RateLimiterProperties limiterProperties) {
-        super(limiterProperties);
+    public RedisRateLimitAspect(RateLimitProperties limitProperties) {
+        super(limitProperties);
     }
 
-    public RedisRateLimiterAspect(@Nonnull RateLimiterProperties properties, @Nullable RateLimiterCallback callback, @Nonnull StringRedisTemplate template) {
+    public RedisRateLimitAspect(@Nonnull RateLimitProperties properties, @Nullable RateLimitCallback callback, @Nonnull StringRedisTemplate template) {
         super(properties, callback);
         this.redisTemplate = template;
     }
 
-    protected Object processPoint(@Nonnull ProceedingJoinPoint point, @Nonnull String identifier, @Nonnull RateLimited annotation) throws Throwable {
+    protected Object processPoint(@Nonnull ProceedingJoinPoint point, @Nonnull String identifier, @Nonnull RateLimit annotation) throws Throwable {
         Assert.notNull(redisTemplate, AssertMessageConst.NOT_NULL);
-        if (RedisOperationWraps.existsKey(redisTemplate, identifier)) {
+        if (RedisTemplateWraps.existsKey(redisTemplate, identifier)) {
             HttpServletRequest request = WebUtilsWraps.getContextServletRequest();
             if (request != null) {
-                super.applicationContext.publishEvent(new RateLimitedEvent(request));
+                super.applicationContext.publishEvent(new RateLimitEvent(request));
             }
-            if (BooleanUtils.isTrue(super.limiterProperties.getThrowsException())) {
-                throw new RateLimitedException();
+            if (BooleanUtils.isTrue(super.limitProperties.getThrowsException())) {
+                throw new RateLimitException();
             }
-            Assert.notNull(super.limiterCallback, AssertMessageConst.NOT_NULL);
-            return super.limiterCallback.process(point, annotation);
+            Assert.notNull(super.limitCallback, AssertMessageConst.NOT_NULL);
+            return super.limitCallback.process(point, annotation);
         } else {
             String dateTime = LocalDateWraps.formatCurrentDateTime();
             Object result = point.proceed();

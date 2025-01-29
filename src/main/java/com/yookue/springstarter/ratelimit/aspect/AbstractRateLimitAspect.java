@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimiter.aspect;
+package com.yookue.springstarter.ratelimit.aspect;
 
 
 import java.lang.reflect.Method;
@@ -36,38 +36,38 @@ import com.yookue.commonplexus.javaseutil.util.StringUtilsWraps;
 import com.yookue.commonplexus.springutil.util.AopUtilsWraps;
 import com.yookue.commonplexus.springutil.util.BeanFactoryWraps;
 import com.yookue.commonplexus.springutil.util.WebUtilsWraps;
-import com.yookue.springstarter.ratelimiter.annotation.RateLimited;
-import com.yookue.springstarter.ratelimiter.enumeration.LimiterKeyType;
-import com.yookue.springstarter.ratelimiter.facade.RateLimiterCallback;
-import com.yookue.springstarter.ratelimiter.facade.RateLimiterInformant;
-import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
+import com.yookue.springstarter.ratelimit.annotation.RateLimit;
+import com.yookue.springstarter.ratelimit.enumeration.LimitKeyType;
+import com.yookue.springstarter.ratelimit.facade.RateLimitCallback;
+import com.yookue.springstarter.ratelimit.facade.RateLimitInformant;
+import com.yookue.springstarter.ratelimit.property.RateLimitProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 
 /**
- * Abstract aspect for rate limiter
+ * Abstract aspect for rate limit
  *
  * @author David Hsing
  */
 @RequiredArgsConstructor
-public abstract class AbstractRateLimiterAspect implements ApplicationContextAware {
-    protected final RateLimiterProperties limiterProperties;
-    protected RateLimiterCallback limiterCallback;
+public abstract class AbstractRateLimitAspect implements ApplicationContextAware {
+    protected final RateLimitProperties limitProperties;
+    protected RateLimitCallback limitCallback;
 
     @Setter
     protected ApplicationContext applicationContext;
 
-    public AbstractRateLimiterAspect(@Nonnull RateLimiterProperties properties, @Nullable RateLimiterCallback callback) {
-        this.limiterProperties = properties;
-        this.limiterCallback = callback;
+    public AbstractRateLimitAspect(@Nonnull RateLimitProperties properties, @Nullable RateLimitCallback callback) {
+        this.limitProperties = properties;
+        this.limitCallback = callback;
     }
 
-    @Around(value = "@annotation(com.yookue.springstarter.ratelimiter.annotation.RateLimited)")
+    @Around(value = "@annotation(com.yookue.springstarter.ratelimit.annotation.RateLimited)")
     public Object aroundPoint(@Nonnull ProceedingJoinPoint point) throws Throwable {
         Method method = AopUtilsWraps.getTargetMethod(point);
         Assert.notNull(method, AssertMessageConst.NOT_NULL);
-        RateLimited annotation = AnnotationUtils.getAnnotation(method, RateLimited.class);
+        RateLimit annotation = AnnotationUtils.getAnnotation(method, RateLimit.class);
         if (annotation == null || annotation.ttl() <= 0L || annotation.unit() == null) {
             return point.proceed();
         }
@@ -79,24 +79,24 @@ public abstract class AbstractRateLimiterAspect implements ApplicationContextAwa
     }
 
     @Nullable
-    protected String determineIdentifier(@Nonnull Method method, @Nonnull RateLimited annotation) throws Exception {
-        String name = StringUtils.join(limiterProperties.getNamePrefix(), ClassUtils.getQualifiedMethodName(method), limiterProperties.getNameSuffix());
+    protected String determineIdentifier(@Nonnull Method method, @Nonnull RateLimit annotation) throws Exception {
+        String name = StringUtils.join(limitProperties.getNamePrefix(), ClassUtils.getQualifiedMethodName(method), limitProperties.getNameSuffix());
         StringBuilder builder = new StringBuilder(annotation.keyType().getValue());
         builder.append(CharVariantConst.SQUARE_BRACKET_LEFT);
-        if (annotation.keyType() == LimiterKeyType.IP_ADDRESS || annotation.keyType() == LimiterKeyType.SESSION) {
+        if (annotation.keyType() == LimitKeyType.IP_ADDRESS || annotation.keyType() == LimitKeyType.SESSION) {
             HttpServletRequest request = WebUtilsWraps.getContextServletRequest();
             if (request == null) {
                 return null;
             }
-            if (annotation.keyType() == LimiterKeyType.IP_ADDRESS) {
+            if (annotation.keyType() == LimitKeyType.IP_ADDRESS) {
                 builder.append(WebUtilsWraps.getRemoteAddress(request));
-            } else if (annotation.keyType() == LimiterKeyType.SESSION) {
+            } else if (annotation.keyType() == LimitKeyType.SESSION) {
                 builder.append(WebUtilsWraps.getSessionId(request));
             }
-        } else if (annotation.keyType() == LimiterKeyType.USERNAME) {
-            RateLimiterInformant informant = BeanFactoryWraps.getBean(applicationContext, RateLimiterInformant.class);
+        } else if (annotation.keyType() == LimitKeyType.USERNAME) {
+            RateLimitInformant informant = BeanFactoryWraps.getBean(applicationContext, RateLimitInformant.class);
             if (informant == null) {
-                throw new NoSuchBeanDefinitionException(RateLimiterInformant.class);
+                throw new NoSuchBeanDefinitionException(RateLimitInformant.class);
             }
             builder.append(informant.getUsername());
         }
@@ -104,5 +104,5 @@ public abstract class AbstractRateLimiterAspect implements ApplicationContextAwa
         return StringUtilsWraps.joinWithColon(name, builder.toString());
     }
 
-    protected abstract Object processPoint(@Nonnull ProceedingJoinPoint point, @Nonnull String identifier, @Nonnull RateLimited annotation) throws Throwable;
+    protected abstract Object processPoint(@Nonnull ProceedingJoinPoint point, @Nonnull String identifier, @Nonnull RateLimit annotation) throws Throwable;
 }

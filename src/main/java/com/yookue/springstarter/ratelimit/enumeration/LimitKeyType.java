@@ -14,23 +14,27 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimiter.event;
+package com.yookue.springstarter.ratelimit.enumeration;
 
 
-import jakarta.annotation.Nonnull;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.context.ApplicationEvent;
+import com.yookue.commonplexus.javaseutil.support.ValueEnum;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 
 /**
- * Event when rate limited of requests
+ * Enumerations of limit key types
  *
  * @author David Hsing
- * @see com.yookue.springstarter.ratelimiter.exception.RateLimitedException
  */
+@AllArgsConstructor
+@Getter
 @SuppressWarnings("unused")
-public class RateLimitedEvent extends ApplicationEvent {
-    public RateLimitedEvent(@Nonnull HttpServletRequest request) {
-        super(request);
-    }
+public enum LimitKeyType implements ValueEnum<String> {
+    ANY("any"),    // $NON-NLS-1$
+    IP_ADDRESS("ip-address"),    // $NON-NLS-1$
+    SESSION("session"),    // $NON-NLS-1$
+    USERNAME("username");    // $NON-NLS-1$
+
+    private final String value;
 }
