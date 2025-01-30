@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimit.aspect;
+package com.yookue.springstarter.ratelimiter.aspect;
 
 
 import java.lang.reflect.Method;
@@ -36,11 +36,11 @@ import com.yookue.commonplexus.javaseutil.util.StringUtilsWraps;
 import com.yookue.commonplexus.springutil.util.AopUtilsWraps;
 import com.yookue.commonplexus.springutil.util.BeanFactoryWraps;
 import com.yookue.commonplexus.springutil.util.WebUtilsWraps;
-import com.yookue.springstarter.ratelimit.annotation.RateLimit;
-import com.yookue.springstarter.ratelimit.enumeration.LimitKeyType;
-import com.yookue.springstarter.ratelimit.facade.RateLimitCallback;
-import com.yookue.springstarter.ratelimit.facade.RateLimitInformant;
-import com.yookue.springstarter.ratelimit.property.RateLimitProperties;
+import com.yookue.springstarter.ratelimiter.annotation.RateLimit;
+import com.yookue.springstarter.ratelimiter.enumeration.LimitTriggerType;
+import com.yookue.springstarter.ratelimiter.facade.RateLimitCallback;
+import com.yookue.springstarter.ratelimiter.facade.RateLimitInformant;
+import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -52,18 +52,18 @@ import lombok.Setter;
  */
 @RequiredArgsConstructor
 public abstract class AbstractRateLimitAspect implements ApplicationContextAware {
-    protected final RateLimitProperties limitProperties;
+    protected final RateLimiterProperties limiterProperties;
     protected RateLimitCallback limitCallback;
 
     @Setter
     protected ApplicationContext applicationContext;
 
-    public AbstractRateLimitAspect(@Nonnull RateLimitProperties properties, @Nullable RateLimitCallback callback) {
-        this.limitProperties = properties;
+    public AbstractRateLimitAspect(@Nonnull RateLimiterProperties properties, @Nullable RateLimitCallback callback) {
+        this.limiterProperties = properties;
         this.limitCallback = callback;
     }
 
-    @Around(value = "@annotation(com.yookue.springstarter.ratelimit.annotation.RateLimited)")
+    @Around(value = "@annotation(com.yookue.springstarter.ratelimiter.annotation.RateLimit)")
     public Object aroundPoint(@Nonnull ProceedingJoinPoint point) throws Throwable {
         Method method = AopUtilsWraps.getTargetMethod(point);
         Assert.notNull(method, AssertMessageConst.NOT_NULL);
@@ -80,20 +80,20 @@ public abstract class AbstractRateLimitAspect implements ApplicationContextAware
 
     @Nullable
     protected String determineIdentifier(@Nonnull Method method, @Nonnull RateLimit annotation) throws Exception {
-        String name = StringUtils.join(limitProperties.getNamePrefix(), ClassUtils.getQualifiedMethodName(method), limitProperties.getNameSuffix());
-        StringBuilder builder = new StringBuilder(annotation.keyType().getValue());
+        String name = StringUtils.join(limiterProperties.getNamePrefix(), ClassUtils.getQualifiedMethodName(method), limiterProperties.getNameSuffix());
+        StringBuilder builder = new StringBuilder(annotation.triggerType().getValue());
         builder.append(CharVariantConst.SQUARE_BRACKET_LEFT);
-        if (annotation.keyType() == LimitKeyType.IP_ADDRESS || annotation.keyType() == LimitKeyType.SESSION) {
+        if (annotation.triggerType() == LimitTriggerType.IP_ADDRESS || annotation.triggerType() == LimitTriggerType.SESSION) {
             HttpServletRequest request = WebUtilsWraps.getContextServletRequest();
             if (request == null) {
                 return null;
             }
-            if (annotation.keyType() == LimitKeyType.IP_ADDRESS) {
+            if (annotation.triggerType() == LimitTriggerType.IP_ADDRESS) {
                 builder.append(WebUtilsWraps.getRemoteAddress(request));
-            } else if (annotation.keyType() == LimitKeyType.SESSION) {
+            } else if (annotation.triggerType() == LimitTriggerType.SESSION) {
                 builder.append(WebUtilsWraps.getSessionId(request));
             }
-        } else if (annotation.keyType() == LimitKeyType.USERNAME) {
+        } else if (annotation.triggerType() == LimitTriggerType.USERNAME) {
             RateLimitInformant informant = BeanFactoryWraps.getBean(applicationContext, RateLimitInformant.class);
             if (informant == null) {
                 throw new NoSuchBeanDefinitionException(RateLimitInformant.class);

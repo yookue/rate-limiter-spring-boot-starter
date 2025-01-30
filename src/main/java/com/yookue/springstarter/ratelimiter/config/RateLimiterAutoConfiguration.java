@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimit.config;
+package com.yookue.springstarter.ratelimiter.config;
 
 
 import jakarta.annotation.Nonnull;
@@ -31,10 +31,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import com.yookue.springstarter.ratelimit.aspect.RedisRateLimitAspect;
-import com.yookue.springstarter.ratelimit.facade.RateLimitCallback;
-import com.yookue.springstarter.ratelimit.facade.impl.DefaultRateLimitCallback;
-import com.yookue.springstarter.ratelimit.property.RateLimitProperties;
+import com.yookue.springstarter.ratelimiter.aspect.RedisRateLimitAspect;
+import com.yookue.springstarter.ratelimiter.facade.RateLimitCallback;
+import com.yookue.springstarter.ratelimiter.facade.impl.DefaultRateLimitCallback;
+import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
 
 
 /**
@@ -43,32 +43,32 @@ import com.yookue.springstarter.ratelimit.property.RateLimitProperties;
  * @author David Hsing
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(prefix = RateLimitAutoConfiguration.PROPERTIES_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
-@Import(value = {RateLimitAutoConfiguration.Entry.class, RateLimitAutoConfiguration.Redis.class})
-public class RateLimitAutoConfiguration {
-    public static final String PROPERTIES_PREFIX = "spring.rate-limit";    // $NON-NLS-1$
+@ConditionalOnProperty(prefix = RateLimiterAutoConfiguration.PROPERTIES_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
+@Import(value = {RateLimiterAutoConfiguration.Entry.class, RateLimiterAutoConfiguration.Redis.class})
+public class RateLimiterAutoConfiguration {
+    public static final String PROPERTIES_PREFIX = "spring.rate-limiter";    // $NON-NLS-1$
     public static final String REDIS_TEMPLATE = "rateLimitRedisTemplate";    // $NON-NLS-1$
 
     @Order(value = 0)
-    @EnableConfigurationProperties(value = RateLimitProperties.class)
+    @EnableConfigurationProperties(value = RateLimiterProperties.class)
     static class Entry {
         @Bean
-        @ConditionalOnProperty(prefix = RateLimitAutoConfiguration.PROPERTIES_PREFIX, name = "throws-exception", havingValue = "false", matchIfMissing = true)
+        @ConditionalOnProperty(prefix = RateLimiterAutoConfiguration.PROPERTIES_PREFIX, name = "throws-exception", havingValue = "false", matchIfMissing = true)
         @ConditionalOnMissingBean
-        public RateLimitCallback defaultRateLimitCallback(@Nonnull RateLimitProperties properties) {
+        public RateLimitCallback defaultRateLimitCallback(@Nonnull RateLimiterProperties properties) {
             return new DefaultRateLimitCallback(properties);
         }
     }
 
 
     @Order(value = 1)
-    @ConditionalOnProperty(prefix = RateLimitAutoConfiguration.PROPERTIES_PREFIX, name = "storage-type", havingValue = "redis", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = RateLimiterAutoConfiguration.PROPERTIES_PREFIX, name = "storage-type", havingValue = "redis", matchIfMissing = true)
     @ConditionalOnClass(name = "org.springframework.data.redis.core.RedisOperations")
     static class Redis {
         @Bean
         @ConditionalOnMissingBean
         @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-        public RedisRateLimitAspect redisRateLimitAspect(@Nonnull RateLimitProperties properties, @Nonnull ObjectProvider<RateLimitCallback> callback, @Nullable @Qualifier(value = REDIS_TEMPLATE) StringRedisTemplate preferredTemplate, @Nonnull ObjectProvider<StringRedisTemplate> presentTemplate) {
+        public RedisRateLimitAspect redisRateLimitAspect(@Nonnull RateLimiterProperties properties, @Nonnull ObjectProvider<RateLimitCallback> callback, @Nullable @Qualifier(value = REDIS_TEMPLATE) StringRedisTemplate preferredTemplate, @Nonnull ObjectProvider<StringRedisTemplate> presentTemplate) {
             return new RedisRateLimitAspect(properties, callback.getIfAvailable(), ObjectUtils.defaultIfNull(preferredTemplate, presentTemplate.getIfAvailable()));
         }
     }

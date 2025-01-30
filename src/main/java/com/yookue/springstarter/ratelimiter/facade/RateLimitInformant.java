@@ -14,24 +14,16 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimit.enumeration;
-
-
-import com.yookue.commonplexus.javaseutil.support.ValueEnum;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+package com.yookue.springstarter.ratelimiter.facade;
 
 
 /**
- * Enumerations of limit storage types
+ * Facade for rate limit informant
  *
  * @author David Hsing
  */
-@AllArgsConstructor
-@Getter
-@SuppressWarnings("unused")
-public enum LimitStorageType implements ValueEnum<String> {
-    REDIS("redis");    // $NON-NLS-1$
-
-    private final String value;
+@FunctionalInterface
+public interface RateLimitInformant {
+    @SuppressWarnings("RedundantThrows")
+    String getUsername() throws Exception;
 }

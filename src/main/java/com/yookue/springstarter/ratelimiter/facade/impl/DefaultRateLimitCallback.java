@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimit.facade.impl;
+package com.yookue.springstarter.ratelimiter.facade.impl;
 
 
 import jakarta.annotation.Nonnull;
@@ -28,8 +28,8 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.yookue.commonplexus.javaseutil.constant.AssertMessageConst;
 import com.yookue.commonplexus.springutil.structure.RestResponseStruct;
 import com.yookue.commonplexus.springutil.util.WebUtilsWraps;
-import com.yookue.springstarter.ratelimit.annotation.RateLimit;
-import com.yookue.springstarter.ratelimit.property.RateLimitProperties;
+import com.yookue.springstarter.ratelimiter.annotation.RateLimit;
+import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
 
 
 /**
@@ -38,7 +38,7 @@ import com.yookue.springstarter.ratelimit.property.RateLimitProperties;
  * @author David Hsing
  */
 public class DefaultRateLimitCallback extends AbstractRateLimitCallback {
-    public DefaultRateLimitCallback(RateLimitProperties properties) {
+    public DefaultRateLimitCallback(RateLimiterProperties properties) {
         super(properties);
     }
 

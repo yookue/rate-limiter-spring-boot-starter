@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimit.facade;
+package com.yookue.springstarter.ratelimiter.facade;
 
 
 import jakarta.annotation.Nonnull;
 import org.aspectj.lang.ProceedingJoinPoint;
-import com.yookue.springstarter.ratelimit.annotation.RateLimit;
+import com.yookue.springstarter.ratelimiter.annotation.RateLimit;
 
 
 /**

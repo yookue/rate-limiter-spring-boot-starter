@@ -14,20 +14,23 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimit.exception;
+package com.yookue.springstarter.ratelimiter.event;
 
 
-import lombok.NoArgsConstructor;
-import lombok.experimental.StandardException;
+import jakarta.annotation.Nonnull;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.context.ApplicationEvent;
 
 
 /**
- * Thrown to indicate that the request rate is limited
+ * Event when rate limited of requests
  *
  * @author David Hsing
+ * @see com.yookue.springstarter.ratelimiter.exception.RateLimitException
  */
-@NoArgsConstructor
-@StandardException
 @SuppressWarnings("unused")
-public class RateLimitException extends RuntimeException {
+public class RateLimitEvent extends ApplicationEvent {
+    public RateLimitEvent(@Nonnull HttpServletRequest request) {
+        super(request);
+    }
 }

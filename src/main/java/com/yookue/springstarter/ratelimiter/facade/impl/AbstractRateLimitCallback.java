@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimit.facade.impl;
+package com.yookue.springstarter.ratelimiter.facade.impl;
 
 
 import jakarta.annotation.Nonnull;
@@ -23,9 +23,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.context.i18n.LocaleContextHolder;
 import com.yookue.commonplexus.springutil.util.MessageSourceWraps;
-import com.yookue.springstarter.ratelimit.annotation.RateLimit;
-import com.yookue.springstarter.ratelimit.facade.RateLimitCallback;
-import com.yookue.springstarter.ratelimit.property.RateLimitProperties;
+import com.yookue.springstarter.ratelimiter.annotation.RateLimit;
+import com.yookue.springstarter.ratelimiter.facade.RateLimitCallback;
+import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -39,7 +39,7 @@ import lombok.Setter;
 public abstract class AbstractRateLimitCallback implements RateLimitCallback, MessageSourceAware {
     private static final String MESSAGE_CODE = "AbstractRateLimitCallback.tooFrequentTry";    // $NON-NLS-1$
     private static final String MESSAGE_TEXT = "Your operation is too frequent, please try again later";    // $NON-NLS-1$
-    protected final RateLimitProperties limitProperties;
+    protected final RateLimiterProperties limitProperties;
 
     @Setter
     protected MessageSource messageSource;

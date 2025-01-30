@@ -1,4 +1,4 @@
-# Rate Limit Spring Boot Starter
+# Rate Limiter Spring Boot Starter
 
 Spring Boot application integrates rate limitation quickly, to prevent too frequent accesses.
 
@@ -9,26 +9,26 @@ Spring Boot application integrates rate limitation quickly, to prevent too frequ
 ```xml
     <dependency>
         <groupId>com.yookue.springstarter</groupId>
-        <artifactId>rate-limit-spring-boot-starter</artifactId>
+        <artifactId>rate-limiter-spring-boot-starter</artifactId>
         <version>LATEST</version>
     </dependency>
 ```
 
-> By default, this starter will auto take effect, you can turn it off by `spring.rate-limit.enabled = false`
+> By default, this starter will auto take effect, you can turn it off by `spring.rate-limiter.enabled = false`
 
-- Configure Spring Boot `application.yml` with prefix `spring.rate-limit` (**Optional**)
+- Configure Spring Boot `application.yml` with prefix `spring.rate-limiter` (**Optional**)
 
 ```yml
 spring:
     rate-limit:
-        name-prefix: "${spring.application.name}:limit:"
-        denied-html-url: '/error/rate-limit'
-        denied-rest-url: '/error/rate-limit'
+        name-prefix: "${spring.application.name}:limiter:"
+        denied-html-url: '/error/rate-limited'
+        denied-rest-url: '/error/rate-limited'
         storage-type: 'redis'
         throws-exception: false
 ```
 
-- Annotate your (non-static)  method with `@RateLimited` annotation, done!
+- Annotate your (non-static)  method with `@RateLimit` annotation, done!
 
 > The `keyType` attribute of the annotation, is the limitation ways, supports
   - IP address
@@ -40,7 +40,7 @@ spring:
 
 ## Document
 
-- Github: https://github.com/yookue/rate-limit-spring-boot-starter
+- Github: https://github.com/yookue/rate-limiter-spring-boot-starter
 
 ## Requirement
 

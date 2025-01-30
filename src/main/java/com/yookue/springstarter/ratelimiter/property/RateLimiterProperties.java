@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimit.property;
+package com.yookue.springstarter.ratelimiter.property;
 
 
 import java.io.Serializable;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import com.yookue.springstarter.ratelimit.config.RateLimitAutoConfiguration;
-import com.yookue.springstarter.ratelimit.enumeration.LimitStorageType;
+import com.yookue.springstarter.ratelimiter.config.RateLimiterAutoConfiguration;
+import com.yookue.springstarter.ratelimiter.enumeration.LimiterStorageType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 
 /**
- * Properties for Rate Limit starter
+ * Properties for Rate Limiter starter
  *
  * @author David Hsing
  */
-@ConfigurationProperties(prefix = RateLimitAutoConfiguration.PROPERTIES_PREFIX)
+@ConfigurationProperties(prefix = RateLimiterAutoConfiguration.PROPERTIES_PREFIX)
 @Getter
 @Setter
 @ToString
-public class RateLimitProperties implements Serializable {
+public class RateLimiterProperties implements Serializable {
     /**
      * Indicates whether to enable this starter or not
      * <p>
@@ -59,7 +59,7 @@ public class RateLimitProperties implements Serializable {
     private String nameSuffix;
 
     /**
-     * Throws {@link com.yookue.springstarter.ratelimit.exception.RateLimitException} instead of redirection
+     * Throws {@link com.yookue.springstarter.ratelimiter.exception.RateLimitException} instead of redirection
      */
     private Boolean throwsException = true;
 
@@ -76,5 +76,5 @@ public class RateLimitProperties implements Serializable {
     /**
      * The storage type of the limier, default is {@code REDIS}
      */
-    private LimitStorageType storageType = LimitStorageType.REDIS;
+    private LimiterStorageType storageType = LimiterStorageType.REDIS;
 }

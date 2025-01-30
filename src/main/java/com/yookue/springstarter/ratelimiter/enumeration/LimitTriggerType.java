@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimit.enumeration;
+package com.yookue.springstarter.ratelimiter.enumeration;
 
 
 import com.yookue.commonplexus.javaseutil.support.ValueEnum;
@@ -23,14 +23,14 @@ import lombok.Getter;
 
 
 /**
- * Enumerations of limit key types
+ * Enumerations of limit trigger types
  *
  * @author David Hsing
  */
 @AllArgsConstructor
 @Getter
 @SuppressWarnings("unused")
-public enum LimitKeyType implements ValueEnum<String> {
+public enum LimitTriggerType implements ValueEnum<String> {
     ANY("any"),    // $NON-NLS-1$
     IP_ADDRESS("ip-address"),    // $NON-NLS-1$
     SESSION("session"),    // $NON-NLS-1$

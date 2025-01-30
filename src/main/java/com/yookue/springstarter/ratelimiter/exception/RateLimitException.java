@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimit.facade;
+package com.yookue.springstarter.ratelimiter.exception;
+
+
+import lombok.NoArgsConstructor;
+import lombok.experimental.StandardException;
 
 
 /**
- * Facade for rate limit informant
+ * Thrown to indicate that the request rate is limited
  *
  * @author David Hsing
  */
-@FunctionalInterface
-public interface RateLimitInformant {
-    @SuppressWarnings("RedundantThrows")
-    String getUsername() throws Exception;
+@NoArgsConstructor
+@StandardException
+@SuppressWarnings("unused")
+public class RateLimitException extends RuntimeException {
 }

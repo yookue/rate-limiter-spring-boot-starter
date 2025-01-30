@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yookue.springstarter.ratelimit.aspect;
+package com.yookue.springstarter.ratelimiter.aspect;
 
 
 import java.time.temporal.ChronoUnit;
@@ -30,11 +30,11 @@ import com.yookue.commonplexus.javaseutil.constant.AssertMessageConst;
 import com.yookue.commonplexus.javaseutil.util.LocalDateWraps;
 import com.yookue.commonplexus.springutil.util.RedisTemplateWraps;
 import com.yookue.commonplexus.springutil.util.WebUtilsWraps;
-import com.yookue.springstarter.ratelimit.annotation.RateLimit;
-import com.yookue.springstarter.ratelimit.event.RateLimitEvent;
-import com.yookue.springstarter.ratelimit.exception.RateLimitException;
-import com.yookue.springstarter.ratelimit.facade.RateLimitCallback;
-import com.yookue.springstarter.ratelimit.property.RateLimitProperties;
+import com.yookue.springstarter.ratelimiter.annotation.RateLimit;
+import com.yookue.springstarter.ratelimiter.event.RateLimitEvent;
+import com.yookue.springstarter.ratelimiter.exception.RateLimitException;
+import com.yookue.springstarter.ratelimiter.facade.RateLimitCallback;
+import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,11 +51,11 @@ import lombok.Setter;
 public class RedisRateLimitAspect extends AbstractRateLimitAspect {
     private StringRedisTemplate redisTemplate;
 
-    public RedisRateLimitAspect(RateLimitProperties limitProperties) {
+    public RedisRateLimitAspect(RateLimiterProperties limitProperties) {
         super(limitProperties);
     }
 
-    public RedisRateLimitAspect(@Nonnull RateLimitProperties properties, @Nullable RateLimitCallback callback, @Nonnull StringRedisTemplate template) {
+    public RedisRateLimitAspect(@Nonnull RateLimiterProperties properties, @Nullable RateLimitCallback callback, @Nonnull StringRedisTemplate template) {
         super(properties, callback);
         this.redisTemplate = template;
     }
@@ -67,7 +67,7 @@ public class RedisRateLimitAspect extends AbstractRateLimitAspect {
             if (request != null) {
                 super.applicationContext.publishEvent(new RateLimitEvent(request));
             }
-            if (BooleanUtils.isTrue(super.limitProperties.getThrowsException())) {
+            if (BooleanUtils.isTrue(super.limiterProperties.getThrowsException())) {
                 throw new RateLimitException();
             }
             Assert.notNull(super.limitCallback, AssertMessageConst.NOT_NULL);
