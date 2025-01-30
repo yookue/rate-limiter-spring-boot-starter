@@ -47,7 +47,7 @@ import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
 @Import(value = {RateLimiterAutoConfiguration.Entry.class, RateLimiterAutoConfiguration.Redis.class})
 public class RateLimiterAutoConfiguration {
     public static final String PROPERTIES_PREFIX = "spring.rate-limiter";    // $NON-NLS-1$
-    public static final String REDIS_TEMPLATE = "rateLimitRedisTemplate";    // $NON-NLS-1$
+    public static final String REDIS_TEMPLATE = "rateLimiterRedisTemplate";    // $NON-NLS-1$
 
     @Order(value = 0)
     @EnableConfigurationProperties(value = RateLimiterProperties.class)
