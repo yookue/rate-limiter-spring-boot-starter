@@ -51,19 +51,27 @@ public class DefaultRateLimitCallback extends AbstractRateLimitCallback {
 
     @SuppressWarnings("unused")
     protected Object processHtml(@Nonnull ProceedingJoinPoint point, @Nonnull RateLimit annotation) throws Exception {
-        if (StringUtils.isNotBlank(super.limitProperties.getDeniedHtmlUrl())) {
-            return new RedirectView(super.limitProperties.getDeniedHtmlUrl());
-        }
+        HttpServletRequest request = WebUtilsWraps.getContextServletRequest();
         HttpServletResponse response = WebUtilsWraps.getContextServletResponse();
+        Assert.notNull(request, AssertMessageConst.NOT_NULL);
         Assert.notNull(response, AssertMessageConst.NOT_NULL);
+        if (StringUtils.isNotBlank(super.limitProperties.getDeniedHtmlUrl())) {
+            WebUtilsWraps.forwardRequest(request, response, super.limitProperties.getDeniedHtmlUrl());
+            return null;
+        }
         WebUtilsWraps.writeResponse(response, super.resolveMessage(annotation));
         return null;
     }
 
     @SuppressWarnings("unused")
-    protected Object processRest(@Nonnull ProceedingJoinPoint point, @Nonnull RateLimit annotation) {
+    protected Object processRest(@Nonnull ProceedingJoinPoint point, @Nonnull RateLimit annotation) throws Exception {
+        HttpServletRequest request = WebUtilsWraps.getContextServletRequest();
+        HttpServletResponse response = WebUtilsWraps.getContextServletResponse();
+        Assert.notNull(request, AssertMessageConst.NOT_NULL);
+        Assert.notNull(response, AssertMessageConst.NOT_NULL);
         if (StringUtils.isNotBlank(super.limitProperties.getDeniedRestUrl())) {
-            return new RedirectView(super.limitProperties.getDeniedRestUrl());
+            WebUtilsWraps.forwardRequest(request, response, super.limitProperties.getDeniedRestUrl());
+            return null;
         }
         return new RestResponseStruct(HttpStatus.FORBIDDEN, super.resolveMessage(annotation));
     }

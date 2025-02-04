@@ -35,12 +35,14 @@ import com.yookue.commonplexus.javaseutil.constant.CharVariantConst;
 import com.yookue.commonplexus.javaseutil.util.StringUtilsWraps;
 import com.yookue.commonplexus.springutil.util.AopUtilsWraps;
 import com.yookue.commonplexus.springutil.util.BeanFactoryWraps;
+import com.yookue.commonplexus.springutil.util.RequestMappingWraps;
 import com.yookue.commonplexus.springutil.util.WebUtilsWraps;
 import com.yookue.springstarter.ratelimiter.annotation.RateLimit;
 import com.yookue.springstarter.ratelimiter.enumeration.LimitTriggerType;
 import com.yookue.springstarter.ratelimiter.facade.RateLimitCallback;
 import com.yookue.springstarter.ratelimiter.facade.RateLimitInformant;
 import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
+import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -51,6 +53,7 @@ import lombok.Setter;
  * @author David Hsing
  */
 @RequiredArgsConstructor
+@Slf4j
 public abstract class AbstractRateLimitAspect implements ApplicationContextAware {
     protected final RateLimiterProperties limiterProperties;
     protected RateLimitCallback limitCallback;
@@ -70,6 +73,11 @@ public abstract class AbstractRateLimitAspect implements ApplicationContextAware
         RateLimit annotation = AnnotationUtils.getAnnotation(method, RateLimit.class);
         if (annotation == null || annotation.ttl() <= 0L || annotation.unit() == null) {
             return point.proceed();
+        }
+        if (!RequestMappingWraps.anyMapping(method)) {
+            if (log.isWarnEnabled()) {
+                log.warn("Method '{}.{}' annotated with '@RateLimit' should also annotated with '@RequestMapping/@GetMapping/@PostMapping/@PatchMapping/@PutMapping/@DeleteMapping' as well", method.getDeclaringClass().getCanonicalName(), method.getName());
+            }
         }
         String identifier = determineIdentifier(method, annotation);
         if (StringUtils.isBlank(identifier)) {
