@@ -25,7 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.time.temporal.ChronoUnit;
 import org.apache.commons.lang3.StringUtils;
-import com.yookue.springstarter.ratelimiter.enumeration.LimitTriggerType;
+import com.yookue.springstarter.ratelimiter.enumeration.LimiterTriggerType;
 
 
 /**
@@ -56,11 +56,11 @@ public @interface RateLimit {
     ChronoUnit unit() default ChronoUnit.SECONDS;
 
     /**
-     * Returns the trigger type for limit
+     * Returns the trigger type for limiter
      *
-     * @return the trigger type for limit
+     * @return the trigger type for limiter
      */
-    LimitTriggerType triggerType() default LimitTriggerType.IP_ADDRESS;
+    LimiterTriggerType triggerType() default LimiterTriggerType.IP_ADDRESS;
 
     /**
      * Returns the message code for {@link org.springframework.context.MessageSource}

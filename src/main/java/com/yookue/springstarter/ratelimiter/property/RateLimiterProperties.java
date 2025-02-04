@@ -59,9 +59,9 @@ public class RateLimiterProperties implements Serializable {
     private String nameSuffix;
 
     /**
-     * Throws {@link com.yookue.springstarter.ratelimiter.exception.RateLimitException} instead of redirection
+     * Throws {@link com.yookue.commonplexus.springutil.exception.RateLimitedException} instead of redirection
      */
-    private Boolean throwsException = true;
+    private Boolean throwException = true;
 
     /**
      * The url to redirect, handled in html model, if exceed the limitation

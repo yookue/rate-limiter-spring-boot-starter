@@ -25,7 +25,7 @@ spring:
         denied-html-url: '/error/rate-limited'
         denied-rest-url: '/error/rate-limited'
         storage-type: 'redis'
-        throws-exception: false
+        throw-exception: false
 ```
 
 - Annotate your (non-static)  method with `@RateLimit` annotation, done!

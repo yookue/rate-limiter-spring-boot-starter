@@ -23,14 +23,14 @@ import lombok.Getter;
 
 
 /**
- * Enumerations of limit trigger types
+ * Enumerations of limiter trigger types
  *
  * @author David Hsing
  */
 @AllArgsConstructor
 @Getter
 @SuppressWarnings("unused")
-public enum LimitTriggerType implements ValueEnum<String> {
+public enum LimiterTriggerType implements ValueEnum<String> {
     ANY("any"),    // $NON-NLS-1$
     IP_ADDRESS("ip-address"),    // $NON-NLS-1$
     SESSION("session"),    // $NON-NLS-1$

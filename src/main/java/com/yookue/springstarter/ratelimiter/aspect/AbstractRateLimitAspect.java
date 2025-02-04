@@ -38,7 +38,7 @@ import com.yookue.commonplexus.springutil.util.BeanFactoryWraps;
 import com.yookue.commonplexus.springutil.util.RequestMappingWraps;
 import com.yookue.commonplexus.springutil.util.WebUtilsWraps;
 import com.yookue.springstarter.ratelimiter.annotation.RateLimit;
-import com.yookue.springstarter.ratelimiter.enumeration.LimitTriggerType;
+import com.yookue.springstarter.ratelimiter.enumeration.LimiterTriggerType;
 import com.yookue.springstarter.ratelimiter.facade.RateLimitCallback;
 import com.yookue.springstarter.ratelimiter.facade.RateLimitInformant;
 import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
@@ -91,17 +91,17 @@ public abstract class AbstractRateLimitAspect implements ApplicationContextAware
         String name = StringUtils.join(limiterProperties.getNamePrefix(), ClassUtils.getQualifiedMethodName(method), limiterProperties.getNameSuffix());
         StringBuilder builder = new StringBuilder(annotation.triggerType().getValue());
         builder.append(CharVariantConst.SQUARE_BRACKET_LEFT);
-        if (annotation.triggerType() == LimitTriggerType.IP_ADDRESS || annotation.triggerType() == LimitTriggerType.SESSION) {
+        if (annotation.triggerType() == LimiterTriggerType.IP_ADDRESS || annotation.triggerType() == LimiterTriggerType.SESSION) {
             HttpServletRequest request = WebUtilsWraps.getContextServletRequest();
             if (request == null) {
                 return null;
             }
-            if (annotation.triggerType() == LimitTriggerType.IP_ADDRESS) {
+            if (annotation.triggerType() == LimiterTriggerType.IP_ADDRESS) {
                 builder.append(WebUtilsWraps.getRemoteAddress(request));
-            } else if (annotation.triggerType() == LimitTriggerType.SESSION) {
+            } else if (annotation.triggerType() == LimiterTriggerType.SESSION) {
                 builder.append(WebUtilsWraps.getSessionId(request));
             }
-        } else if (annotation.triggerType() == LimitTriggerType.USERNAME) {
+        } else if (annotation.triggerType() == LimiterTriggerType.USERNAME) {
             RateLimitInformant informant = BeanFactoryWraps.getBean(applicationContext, RateLimitInformant.class);
             if (informant == null) {
                 throw new NoSuchBeanDefinitionException(RateLimitInformant.class);

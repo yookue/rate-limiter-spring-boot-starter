@@ -28,11 +28,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.Assert;
 import com.yookue.commonplexus.javaseutil.constant.AssertMessageConst;
 import com.yookue.commonplexus.javaseutil.util.LocalDateWraps;
+import com.yookue.commonplexus.springutil.event.RateLimitedEvent;
+import com.yookue.commonplexus.springutil.exception.RateLimitedException;
 import com.yookue.commonplexus.springutil.util.RedisTemplateWraps;
 import com.yookue.commonplexus.springutil.util.WebUtilsWraps;
 import com.yookue.springstarter.ratelimiter.annotation.RateLimit;
-import com.yookue.springstarter.ratelimiter.event.RateLimitEvent;
-import com.yookue.springstarter.ratelimiter.exception.RateLimitException;
 import com.yookue.springstarter.ratelimiter.facade.RateLimitCallback;
 import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
 import lombok.Getter;
@@ -65,10 +65,10 @@ public class RedisRateLimitAspect extends AbstractRateLimitAspect {
         if (RedisTemplateWraps.existsKey(redisTemplate, identifier)) {
             HttpServletRequest request = WebUtilsWraps.getContextServletRequest();
             if (request != null) {
-                super.applicationContext.publishEvent(new RateLimitEvent(request));
+                super.applicationContext.publishEvent(new RateLimitedEvent(request));
             }
-            if (BooleanUtils.isTrue(super.limiterProperties.getThrowsException())) {
-                throw new RateLimitException();
+            if (BooleanUtils.isTrue(super.limiterProperties.getThrowException())) {
+                throw new RateLimitedException();
             }
             Assert.notNull(super.limitCallback, AssertMessageConst.NOT_NULL);
             return super.limitCallback.process(point, annotation);

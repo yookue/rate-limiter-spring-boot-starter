@@ -49,11 +49,12 @@ public class RateLimiterAutoConfiguration {
     public static final String PROPERTIES_PREFIX = "spring.rate-limiter";    // $NON-NLS-1$
     public static final String REDIS_TEMPLATE = "rateLimiterRedisTemplate";    // $NON-NLS-1$
 
+
     @Order(value = 0)
     @EnableConfigurationProperties(value = RateLimiterProperties.class)
     static class Entry {
         @Bean
-        @ConditionalOnProperty(prefix = RateLimiterAutoConfiguration.PROPERTIES_PREFIX, name = "throws-exception", havingValue = "false", matchIfMissing = true)
+        @ConditionalOnProperty(prefix = RateLimiterAutoConfiguration.PROPERTIES_PREFIX, name = "throw-exception", havingValue = "false", matchIfMissing = true)
         @ConditionalOnMissingBean
         public RateLimitCallback defaultRateLimitCallback(@Nonnull RateLimiterProperties properties) {
             return new DefaultRateLimitCallback(properties);
