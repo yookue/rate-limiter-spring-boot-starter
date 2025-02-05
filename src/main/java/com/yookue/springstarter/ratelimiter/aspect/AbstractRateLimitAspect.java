@@ -76,7 +76,7 @@ public abstract class AbstractRateLimitAspect implements ApplicationContextAware
         }
         if (!RequestMappingWraps.anyMapping(method)) {
             if (log.isWarnEnabled()) {
-                log.warn("Method '{}.{}' annotated with '@RateLimit' should also annotated with '@RequestMapping/@GetMapping/@PostMapping/@PatchMapping/@PutMapping/@DeleteMapping' as well", method.getDeclaringClass().getCanonicalName(), method.getName());
+                log.warn("Method '{}.{}' annotated with '@{}' should also annotated with '@RequestMapping/@GetMapping/@PostMapping/@PatchMapping/@PutMapping/@DeleteMapping' as well", method.getDeclaringClass().getCanonicalName(), RateLimit.class.getSimpleName(), method.getName());
             }
         }
         String identifier = determineIdentifier(method, annotation);
