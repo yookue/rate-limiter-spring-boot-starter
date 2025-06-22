@@ -24,7 +24,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
-import org.springframework.web.servlet.view.RedirectView;
 import com.yookue.commonplexus.javaseutil.constant.AssertMessageConst;
 import com.yookue.commonplexus.springutil.structure.RestResponseStruct;
 import com.yookue.commonplexus.springutil.util.WebUtilsWraps;
@@ -49,7 +48,7 @@ public class DefaultRateLimitCallback extends AbstractRateLimitCallback {
         return WebUtilsWraps.isRestRequest(request) ? processRest(point, annotation) : processHtml(point, annotation);
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "SameReturnValue"})
     protected Object processHtml(@Nonnull ProceedingJoinPoint point, @Nonnull RateLimit annotation) throws Exception {
         HttpServletRequest request = WebUtilsWraps.getContextServletRequest();
         HttpServletResponse response = WebUtilsWraps.getContextServletResponse();
