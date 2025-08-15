@@ -17,7 +17,7 @@
 package com.yookue.springstarter.ratelimiter.enumeration;
 
 
-import com.yookue.commonplexus.javaseutil.support.ValueEnum;
+import com.yookue.commonplexus.javaseutil.enumeration.ValueEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
