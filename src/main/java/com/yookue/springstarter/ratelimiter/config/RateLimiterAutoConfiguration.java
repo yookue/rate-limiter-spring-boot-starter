@@ -22,6 +22,7 @@ import jakarta.annotation.Nullable;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBooleanProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -43,7 +44,7 @@ import com.yookue.springstarter.ratelimiter.property.RateLimiterProperties;
  * @author David Hsing
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(prefix = RateLimiterAutoConfiguration.PROPERTIES_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnBooleanProperty(prefix = RateLimiterAutoConfiguration.PROPERTIES_PREFIX, name = "enabled", matchIfMissing = true)
 @Import(value = {RateLimiterAutoConfiguration.Entry.class, RateLimiterAutoConfiguration.Redis.class})
 public class RateLimiterAutoConfiguration {
     public static final String PROPERTIES_PREFIX = "spring.rate-limiter";    // $NON-NLS-1$
@@ -54,7 +55,7 @@ public class RateLimiterAutoConfiguration {
     @EnableConfigurationProperties(value = RateLimiterProperties.class)
     static class Entry {
         @Bean
-        @ConditionalOnProperty(prefix = RateLimiterAutoConfiguration.PROPERTIES_PREFIX, name = "throw-exception", havingValue = "false", matchIfMissing = true)
+        @ConditionalOnBooleanProperty(prefix = RateLimiterAutoConfiguration.PROPERTIES_PREFIX, name = "throw-exception", havingValue = false, matchIfMissing = true)
         @ConditionalOnMissingBean
         public RateLimitCallback defaultRateLimitCallback(@Nonnull RateLimiterProperties properties) {
             return new DefaultRateLimitCallback(properties);
