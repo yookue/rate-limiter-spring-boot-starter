@@ -37,7 +37,7 @@ public class RateLimitedEvent extends ApplicationEvent {
     }
 
     @Nonnull
-    public HttpServletRequest getRawSource() {
+    public HttpServletRequest getServletRequest() {
         return ObjectUtilsWraps.castAs(super.getSource(), HttpServletRequest.class);
     }
 }
